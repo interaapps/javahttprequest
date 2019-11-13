@@ -39,3 +39,38 @@ get("https://interaapps.de")  .toString();
 
 // NOTE: On SysOut you wont need toString()
 ````
+
+
+## Implementing
+
+### Maven
+```xml
+<repositories>
+    <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+    </repository>
+</repositories>
+
+<dependency>
+    <groupId>com.github.interaapps</groupId>
+    <artifactId>javahttprequest</artifactId>
+    <version>0.1</version> <!-- NEWEST AT https://github.com/interaapps/javahttprequest/releases -->
+</dependency>
+```
+
+### Gradle
+```gradle
+	allprojects {
+		repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+	}
+
+	dependencies {
+            implementation 'com.github.interaapps:javahttprequest:0.1' <!-- NEWEST AT https://github.com/interaapps/javahttprequest/releases -->
+    }
+
+```
+
