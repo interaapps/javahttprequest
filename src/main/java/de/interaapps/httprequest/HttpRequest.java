@@ -17,7 +17,6 @@ public class HttpRequest {
     private boolean doAsynchron = false;
     private OnAsyncLoaded onAsyncLoaded;
 
-
     public HttpRequest(String url, RequestMethods requestMethod){
         this.requestMethod = requestMethod;
         parameters = new HashMap<>();
@@ -35,6 +34,7 @@ public class HttpRequest {
 
     public HttpResponse send(){
         HttpResponse httpResponse = new HttpResponse();
+
         try {
             httpURLConnection.setRequestMethod(requestMethod.getName());
         } catch (ProtocolException e) { e.printStackTrace(); }
@@ -53,24 +53,20 @@ public class HttpRequest {
 
         try {
 
-            if(requestMethod == RequestMethods.GET) {
 
-            } else {
+            if (parameters.size() > 0) {
+                StringBuilder parameterString = new StringBuilder();
 
-                if (parameters.size() > 0) {
-                    StringBuilder parameterString = new StringBuilder();
-
-                    String separator = "";
-                    System.out.println("Hi");
-                    for (String key : parameters.keySet()) {
-                        System.out.println("Hi2");
-                        parameterString.append( separator+key+"="+parameters.get(key) );
-                        separator = "&";
-                    }
-
-                    httpURLConnection.setRequestProperty("Content-Length", Integer.toString(parameterString.toString().getBytes().length));
-                    body = parameterString.toString();
+                String separator = "";
+                System.out.println("Hi");
+                for (String key : parameters.keySet()) {
+                    System.out.println("Hi2");
+                    parameterString.append( separator+key+"="+parameters.get(key) );
+                    separator = "&";
                 }
+
+                httpURLConnection.setRequestProperty("Content-Length", Integer.toString(parameterString.toString().getBytes().length));
+                body = parameterString.toString();
             }
 
             httpURLConnection.getOutputStream().write(body.getBytes("UTF-8"));
@@ -120,6 +116,13 @@ public class HttpRequest {
         return doCache;
     }
 
+    /**
+     * This is just for simple debunging usage!
+     */
+    public void printOutResult(){
+        System.out.println(send().getResponseText());
+    }
+
     public HttpRequest setRequestMethods(RequestMethods requestMethods) {
         this.requestMethod = requestMethods;
         return this;
@@ -147,6 +150,16 @@ public class HttpRequest {
         return this;
     }
 
+    public HttpURLConnection getHttpURLConnection() {
+        return httpURLConnection;
+    }
+
+    public HttpURLConnection getConnection() {
+        return httpURLConnection;
+    }
+
+
+
     public HttpRequest setDoAsynchron(boolean doAsynchron) {
         this.doAsynchron = doAsynchron;
         return this;
@@ -154,6 +167,11 @@ public class HttpRequest {
 
     public HttpRequest setOnAsyncLoaded(OnAsyncLoaded onAsyncLoaded) {
         this.onAsyncLoaded = onAsyncLoaded;
+        return this;
+    }
+
+    public HttpRequest setHeader(String key, String value){
+        httpURLConnection.setRequestProperty(key, value);
         return this;
     }
 
@@ -191,5 +209,6 @@ public class HttpRequest {
     public static HttpRequest delete(String url){
         return new HttpRequest(url, RequestMethods.DELETE);
     }
+
 
 }
