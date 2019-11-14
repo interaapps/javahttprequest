@@ -2,11 +2,11 @@
 
 ### Simple post request
 ```java
-HttpRequest.get("http://localhost:8000/example_server.php")
+String out = HttpRequest.get("http://localhost:8000/example_server.php")
         .addParameter("hello", "world")
-        .setOnAsyncLoaded(response->{
-            System.out.println(response);
-        });
+        .send().getResponseText();
+
+System.out.println(out);
 ```
 
 ### Async
@@ -15,7 +15,7 @@ AsyncHttpRequest.get("http://localhost:8000/example_server.php")
         .addParameter("hello", "world")
         .setOnAsyncLoaded(response->{
             System.out.println(response);
-        });
+        }).send();
 ```
 
 ### Multible ways of doing
