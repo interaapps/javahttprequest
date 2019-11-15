@@ -2,32 +2,29 @@ package de.interaapps.httprequest;
 
 public class HttpResponse {
 
-    private String responseText;
+    private String data;
 
-    private int responseCode;
+    private int code;
 
 
-    public String getResponseText() {
-        return responseText;
-    }
-
-    public String getResponse() {
-        return responseText;
-    }
-
-    public void setResponseText(String responseText) {
-        this.responseText = responseText;
-    }
-
-    public int getResponseCode() {
-        return responseCode;
-    }
 
     public String toString() {
-        return responseText;
+        return data;
     }
 
-    public void setResponseCode(int responseCode) {
-        this.responseCode = responseCode;
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
     }
 }

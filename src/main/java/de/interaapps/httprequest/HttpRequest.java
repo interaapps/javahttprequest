@@ -87,8 +87,8 @@ public class HttpRequest {
 
                         rd.close();
 
-                        httpResponse.setResponseCode(httpURLConnection.getResponseCode());
-                        httpResponse.setResponseText(response.toString());
+                        httpResponse.setCode(httpURLConnection.getResponseCode());
+                        httpResponse.setData(response.toString());
 
                         if (doAsynchron)
                             onAsyncLoaded.done(httpResponse);
@@ -120,7 +120,7 @@ public class HttpRequest {
      * This is just for simple debunging usage!
      */
     public void printOutResult(){
-        System.out.println(send().getResponseText());
+        System.out.println(send().getData());
     }
 
     public HttpRequest setRequestMethods(RequestMethods requestMethods) {
@@ -129,7 +129,7 @@ public class HttpRequest {
     }
 
     public String toString() {
-        return send().getResponseText();
+        return send().getData();
     }
 
     public Map<String, Object> getParameters() {
