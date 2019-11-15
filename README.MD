@@ -3,8 +3,7 @@
 ### Simple post request
 ```java
 String out = HttpRequest.get("http://localhost:8000/example_server.php")
-        .addParameter("hello", "world")
-        .send().getResponseText();
+        .send().getData();
 
 System.out.println(out);
 ```
@@ -21,10 +20,10 @@ AsyncHttpRequest.get("http://localhost:8000/example_server.php")
 ### Multible ways of doing
 ```java
 
-new HttpRequest("https://interaapps.de", RequestMethods.GET).send().getResponseText();
+new HttpRequest("https://interaapps.de", RequestMethods.GET).send().getData();
 
 // == (USE THIS ONE!)
-HttpRequest.get("https://interaapps.de").send().getResponseText(); // RETURNS DIRECTLY STRING
+HttpRequest.get("https://interaapps.de").send().getData(); // RETURNS DIRECTLY STRING
 
 // ==
 HttpRequest.get("https://interaapps.de").send()  .toString();
