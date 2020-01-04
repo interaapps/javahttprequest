@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,10 +59,8 @@ public class HttpRequest {
                 StringBuilder parameterString = new StringBuilder();
 
                 String separator = "";
-                System.out.println("Hi");
                 for (String key : parameters.keySet()) {
-                    System.out.println("Hi2");
-                    parameterString.append( separator+key+"="+parameters.get(key) );
+                    parameterString.append( separator+URLEncoder.encode(key, "UTF-8")+"="+URLEncoder.encode(parameters.get(key), "UTF-8") );
                     separator = "&";
                 }
 
@@ -116,9 +115,6 @@ public class HttpRequest {
         return doCache;
     }
 
-    /**
-     * This is just for simple debunging usage!
-     */
     public void printOutResult(){
         System.out.println(send().getData());
     }
