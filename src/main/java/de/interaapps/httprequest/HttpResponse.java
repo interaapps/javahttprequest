@@ -6,8 +6,6 @@ public class HttpResponse {
 
     private int code;
 
-
-
     public String toString() {
         return data;
     }

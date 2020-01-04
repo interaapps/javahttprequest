@@ -18,8 +18,8 @@ public class AsyncHttpRequest {
         return new HttpRequest(url, RequestMethods.DELETE).setDoAsynchron(true);
     }
 
-    public static HttpRequest option(String url){
-        return new HttpRequest(url, RequestMethods.OPTION).setDoAsynchron(true);
+    public static HttpRequest options(String url){
+        return new HttpRequest(url, RequestMethods.OPTIONS).setDoAsynchron(true);
     }
 
     public static HttpRequest trace(String url){

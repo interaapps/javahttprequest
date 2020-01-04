@@ -37,7 +37,7 @@ public class HttpRequest {
         HttpResponse httpResponse = new HttpResponse();
 
         try {
-            httpURLConnection.setRequestMethod(requestMethod.getName());
+            httpURLConnection.setRequestMethod(requestMethod.name());
         } catch (ProtocolException e) { e.printStackTrace(); }
 
         httpURLConnection.setUseCaches(doCache);
@@ -49,7 +49,6 @@ public class HttpRequest {
 
         httpURLConnection.setRequestProperty("Content-Language", "en-US");
 
-        DataOutputStream wr = null;
         StringBuilder response = new StringBuilder();
 
         try {
@@ -60,7 +59,7 @@ public class HttpRequest {
 
                 String separator = "";
                 for (String key : parameters.keySet()) {
-                    parameterString.append( separator+URLEncoder.encode(key, "UTF-8")+"="+URLEncoder.encode(parameters.get(key), "UTF-8") );
+                    parameterString.append( separator+URLEncoder.encode(key, "UTF-8")+"="+URLEncoder.encode((String) parameters.get(key), "UTF-8") );
                     separator = "&";
                 }
 
@@ -69,22 +68,18 @@ public class HttpRequest {
             }
 
             httpURLConnection.getOutputStream().write(body.getBytes("UTF-8"));
-
-
-            wr = new DataOutputStream(httpURLConnection.getOutputStream());
-            wr.close();
+            httpURLConnection.getOutputStream().close();
 
             Runnable runnable = () -> {
                     try{
-                        InputStream is = httpURLConnection.getInputStream();
-
-                        BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+                        InputStream inputStream = httpURLConnection.getInputStream();
+                        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 
                         String line;
-                        while ((line = rd.readLine()) != null)
+                        while ((line = bufferedReader.readLine()) != null)
                             response.append(line + System.getProperty("line.separator"));
 
-                        rd.close();
+                        bufferedReader.close();
 
                         httpResponse.setCode(httpURLConnection.getResponseCode());
                         httpResponse.setData(response.toString());
@@ -101,13 +96,7 @@ public class HttpRequest {
                 runnable.run();
 
 
-        } catch (IOException e) { e.printStackTrace(); } finally {
-            try {
-                wr.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        } catch (IOException e) { e.printStackTrace(); }
         return httpResponse;
     }
 
@@ -190,8 +179,8 @@ public class HttpRequest {
         return new HttpRequest(url, RequestMethods.PUT);
     }
 
-    public static HttpRequest option(String url){
-        return new HttpRequest(url, RequestMethods.OPTION);
+    public static HttpRequest options(String url){
+        return new HttpRequest(url, RequestMethods.OPTIONS);
     }
 
     public static HttpRequest trace(String url){
