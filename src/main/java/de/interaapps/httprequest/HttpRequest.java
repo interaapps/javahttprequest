@@ -23,7 +23,8 @@ public class HttpRequest {
         parameters = new HashMap<>();
         try {
             httpURLConnection = (HttpURLConnection) new URL(url).openConnection();
-        } catch (IOException e) {
+            httpURLConnection.setRequestMethod(requestMethod.name());
+        } catch (IOException | ProtocolException e) {
             e.printStackTrace();
         }
     }
@@ -35,10 +36,6 @@ public class HttpRequest {
 
     public HttpResponse send(){
         HttpResponse httpResponse = new HttpResponse();
-
-        try {
-            httpURLConnection.setRequestMethod(requestMethod.name());
-        } catch (ProtocolException e) { e.printStackTrace(); }
 
         httpURLConnection.setUseCaches(doCache);
 
