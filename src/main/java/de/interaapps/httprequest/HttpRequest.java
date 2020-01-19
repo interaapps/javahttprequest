@@ -12,6 +12,7 @@ public class HttpRequest {
 
     private HttpURLConnection httpURLConnection;
     private boolean doCache = false;
+    private String url;
     private RequestMethods requestMethod;
     private String body = "";
     private Map<String, Object> parameters;
@@ -19,13 +20,9 @@ public class HttpRequest {
     private OnAsyncLoaded onAsyncLoaded;
 
     public HttpRequest(String url, RequestMethods requestMethod){
+        this.url = url;
         this.requestMethod = requestMethod;
         parameters = new HashMap<>();
-        try {
-            httpURLConnection = (HttpURLConnection) new URL(url).openConnection();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public HttpRequest addParameter(String key, Object value){
@@ -35,6 +32,11 @@ public class HttpRequest {
 
     public HttpResponse send(){
         HttpResponse httpResponse = new HttpResponse();
+        try {
+            httpURLConnection = (HttpURLConnection) new URL(url).openConnection();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         try {
             httpURLConnection.setRequestMethod(requestMethod.name());
