@@ -32,6 +32,27 @@ public class HttpRequest {
 
     public HttpResponse send(){
         HttpResponse httpResponse = new HttpResponse();
+        StringBuilder parameterString = null;
+        if (parameters.size() > 0) {
+            parameterString = new StringBuilder();
+
+            String separator = "";
+            for (String key : parameters.keySet()) {
+                try {
+                    parameterString.append(separator).append(URLEncoder.encode(key, "UTF-8")).append("=").append(URLEncoder.encode((String) parameters.get(key), "UTF-8"));
+                    separator = "&";
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+            }
+            body = parameterString.toString();
+
+        }
+
+        if (parameterString != null && requestMethod == RequestMethods.GET) {
+            url += "?"+parameterString;
+        }
+
         try {
             httpURLConnection = (HttpURLConnection) new URL(url).openConnection();
         } catch (IOException e) {
@@ -50,58 +71,48 @@ public class HttpRequest {
 
         httpURLConnection.setRequestProperty("Content-Language", "en-US");
 
+        if (parameterString != null && requestMethod == RequestMethods.POST) {
+            try {
+                httpURLConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                httpURLConnection.setRequestProperty("Content-Length", Integer.toString(parameterString.toString().getBytes().length));
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.getOutputStream().write(body.getBytes("UTF-8"));
+                httpURLConnection.getOutputStream().flush();
+                httpURLConnection.getOutputStream().close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
         StringBuilder response = new StringBuilder();
 
-        try {
+        Runnable runnable = () -> {
+                try{
+
+                    InputStream inputStream = httpURLConnection.getInputStream();
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+
+                    String line;
+                    while ((line = bufferedReader.readLine()) != null)
+                        response.append(line).append(System.getProperty("line.separator"));
+
+                    bufferedReader.close();
+
+                    httpResponse.setCode(httpURLConnection.getResponseCode());
+                    httpResponse.setData(response.toString());
+
+                    if (doAsynchron)
+                        onAsyncLoaded.done(httpResponse);
+
+                } catch (IOException e) { e.printStackTrace(); }
+        };
+
+        if (doAsynchron)
+            new Thread(runnable).start();
+        else
+            runnable.run();
 
 
-            if (parameters.size() > 0) {
-                httpURLConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-                StringBuilder parameterString = new StringBuilder();
-
-                String separator = "";
-                for (String key : parameters.keySet()) {
-                    parameterString.append( separator+URLEncoder.encode(key, "UTF-8")+"="+URLEncoder.encode((String) parameters.get(key), "UTF-8") );
-                    separator = "&";
-                }
-
-                httpURLConnection.setRequestProperty("Content-Length", Integer.toString(parameterString.toString().getBytes().length));
-                body = parameterString.toString();
-            }
-
-            httpURLConnection.setDoOutput(true);
-            httpURLConnection.getOutputStream().write(body.getBytes("UTF-8"));
-            httpURLConnection.getOutputStream().flush();
-            httpURLConnection.getOutputStream().close();
-
-            Runnable runnable = () -> {
-                    try{
-
-                        InputStream inputStream = httpURLConnection.getInputStream();
-                        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-
-                        String line;
-                        while ((line = bufferedReader.readLine()) != null)
-                            response.append(line).append(System.getProperty("line.separator"));
-
-                        bufferedReader.close();
-
-                        httpResponse.setCode(httpURLConnection.getResponseCode());
-                        httpResponse.setData(response.toString());
-
-                        if (doAsynchron)
-                            onAsyncLoaded.done(httpResponse);
-
-                    } catch (IOException e) { e.printStackTrace(); }
-            };
-
-            if (doAsynchron)
-                new Thread(runnable).start();
-            else
-                runnable.run();
-
-
-        } catch (IOException e) { e.printStackTrace(); }
         return httpResponse;
     }
 
