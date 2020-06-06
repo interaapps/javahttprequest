@@ -40,14 +40,13 @@ public class HttpRequest {
 
         try {
             httpURLConnection.setRequestMethod(requestMethod.name());
-        } catch (ProtocolException e) { e.printStackTrace(); }
+        } catch (ProtocolException e) {
+            e.printStackTrace();
+        }
+
+        httpURLConnection.setDoInput(true);
 
         httpURLConnection.setUseCaches(doCache);
-
-        httpURLConnection.setDoOutput(true);
-
-        httpURLConnection.setRequestProperty("Content-Type",
-                "application/x-www-form-urlencoded");
 
         httpURLConnection.setRequestProperty("Content-Language", "en-US");
 
@@ -57,6 +56,7 @@ public class HttpRequest {
 
 
             if (parameters.size() > 0) {
+                httpURLConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 StringBuilder parameterString = new StringBuilder();
 
                 String separator = "";
@@ -69,17 +69,20 @@ public class HttpRequest {
                 body = parameterString.toString();
             }
 
+            httpURLConnection.setDoOutput(true);
             httpURLConnection.getOutputStream().write(body.getBytes("UTF-8"));
+            httpURLConnection.getOutputStream().flush();
             httpURLConnection.getOutputStream().close();
 
             Runnable runnable = () -> {
                     try{
+
                         InputStream inputStream = httpURLConnection.getInputStream();
                         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 
                         String line;
                         while ((line = bufferedReader.readLine()) != null)
-                            response.append(line + System.getProperty("line.separator"));
+                            response.append(line).append(System.getProperty("line.separator"));
 
                         bufferedReader.close();
 

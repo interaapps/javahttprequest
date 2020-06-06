@@ -6,7 +6,7 @@ public class Test {
 
 
     public static void main(String[] args){
-        System.out.println(HttpRequest.get("https://interaapps.de").send().getData());
+        System.out.println(HttpRequest.post("https://postman-echo.com/post").send().getData());
     }
 
 }
