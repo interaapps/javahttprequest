@@ -16,6 +16,7 @@ public class HttpRequest {
     private RequestMethods requestMethod;
     private String body = "";
     private Map<String, Object> parameters;
+    private Map<String, String> headers = new HashMap<>();
     private boolean doAsynchron = false;
     private OnAsyncLoaded onAsyncLoaded;
 
@@ -64,6 +65,10 @@ public class HttpRequest {
         } catch (ProtocolException e) {
             e.printStackTrace();
         }
+
+        headers.forEach((key, val)->{
+            httpURLConnection.setRequestProperty(key, val);
+        });
 
         httpURLConnection.setDoInput(true);
 
@@ -172,7 +177,7 @@ public class HttpRequest {
     }
 
     public HttpRequest setHeader(String key, String value){
-        httpURLConnection.setRequestProperty(key, value);
+        headers.put(key, value);
         return this;
     }
 
