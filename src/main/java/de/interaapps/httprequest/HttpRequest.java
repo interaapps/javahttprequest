@@ -66,10 +66,6 @@ public class HttpRequest {
             e.printStackTrace();
         }
 
-        headers.forEach((key, val)->{
-            httpURLConnection.setRequestProperty(key, val);
-        });
-
         httpURLConnection.setDoInput(true);
 
         httpURLConnection.setUseCaches(doCache);
@@ -88,6 +84,10 @@ public class HttpRequest {
                 e.printStackTrace();
             }
         }
+
+        headers.forEach((key, val)->{
+            httpURLConnection.setRequestProperty(key, val);
+        });
 
         StringBuilder response = new StringBuilder();
 
