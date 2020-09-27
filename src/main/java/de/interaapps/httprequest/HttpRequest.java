@@ -47,6 +47,7 @@ public class HttpRequest {
                 }
             }
             body = parameterString.toString();
+            httpURLConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
         }
 
@@ -72,22 +73,19 @@ public class HttpRequest {
 
         httpURLConnection.setRequestProperty("Content-Language", "en-US");
 
-        if (parameterString != null && requestMethod == RequestMethods.POST) {
-            try {
-                httpURLConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-                httpURLConnection.setRequestProperty("Content-Length", Integer.toString(parameterString.toString().getBytes().length));
-                httpURLConnection.setDoOutput(true);
-                httpURLConnection.getOutputStream().write(body.getBytes("UTF-8"));
-                httpURLConnection.getOutputStream().flush();
-                httpURLConnection.getOutputStream().close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
         headers.forEach((key, val)->{
             httpURLConnection.setRequestProperty(key, val);
         });
+
+        try {
+            httpURLConnection.setRequestProperty("Content-Length", Integer.toString(parameterString.toString().getBytes().length));
+            httpURLConnection.setDoOutput(true);
+            httpURLConnection.getOutputStream().write(body.getBytes("UTF-8"));
+            httpURLConnection.getOutputStream().flush();
+            httpURLConnection.getOutputStream().close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         StringBuilder response = new StringBuilder();
 
