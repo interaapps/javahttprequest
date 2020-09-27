@@ -216,5 +216,7 @@ public class HttpRequest {
         return new HttpRequest(url, RequestMethods.DELETE);
     }
 
-
+    public Map<String, String> getHeaders() {
+        return headers;
+    }
 }
