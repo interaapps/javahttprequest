@@ -78,7 +78,7 @@ public class HttpRequest {
         });
 
         try {
-            httpURLConnection.setRequestProperty("Content-Length", Integer.toString(parameterString.toString().getBytes().length));
+            httpURLConnection.setRequestProperty("Content-Length", Integer.toString(body.getBytes().length));
             httpURLConnection.setDoOutput(true);
             httpURLConnection.getOutputStream().write(body.getBytes("UTF-8"));
             httpURLConnection.getOutputStream().flush();
