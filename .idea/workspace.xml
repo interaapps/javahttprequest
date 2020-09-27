@@ -23,6 +23,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="63cef5ac-35e4-46ac-a0a1-2c5181c06f15" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/de/interaapps/httprequest/HttpRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/interaapps/httprequest/HttpRequest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -42,12 +43,6 @@
         <option name="mavenHome" value="$APPLICATION_HOME_DIR$/plugins/maven/lib/maven3" />
       </MavenGeneralSettings>
     </option>
-  </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="122" />
-    <option name="y" value="302" />
-    <option name="width" value="1570" />
-    <option name="height" value="859" />
   </component>
   <component name="ProjectId" id="1Wd0nI2UuIrWd9AfPvXXFqVrbfN" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />

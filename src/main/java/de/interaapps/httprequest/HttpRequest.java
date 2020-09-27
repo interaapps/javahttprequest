@@ -47,7 +47,6 @@ public class HttpRequest {
                 }
             }
             body = parameterString.toString();
-            httpURLConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
         }
 
@@ -72,6 +71,9 @@ public class HttpRequest {
         httpURLConnection.setUseCaches(doCache);
 
         httpURLConnection.setRequestProperty("Content-Language", "en-US");
+
+        if (parameterString != null)
+            httpURLConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
         headers.forEach((key, val)->{
             httpURLConnection.setRequestProperty(key, val);
